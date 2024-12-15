@@ -1,0 +1,61 @@
+{
+  "name": "nuxt-yapi",
+  "version": "1.0.2",
+  "description": "Nuxt module for Yapi.",
+  "repository": "https://github.com/stonega/nuxt-yapi",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/types.d.ts",
+      "import": "./dist/module.mjs",
+      "require": "./dist/module.cjs"
+    },
+    "./provider": {
+      "types": "./dist/api/provider.d.ts",
+      "import": "./dist/api/provider.mjs",
+      "require": "./dist/api/provider.cjs"
+    }
+  },
+  "main": "./dist/module.cjs",
+  "types": "./dist/types.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "prepack": "nuxt-module-build build",
+    "dev": "nuxi dev playground",
+    "build:provider": "unbuild",
+    "dev:build": "nuxi build playground",
+    "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
+    "release": "pnpm run lint && pnpm run test && pnpm run prepack && pnpm run build:provider && changelogen --release && pnpm publish && git push --follow-tags",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest watch",
+    "test:types": "vue-tsc --noEmit && cd playground && vue-tsc --noEmit"
+  },
+  "dependencies": {
+    "@nuxt/kit": "^3.14.1592",
+    "colorette": "^2.0.20",
+    "ofetch": "^1.4.1",
+    "openapi-typescript": "5.4.2",
+    "replace-in-file": "^8.2.0",
+    "ts-morph": "^24.0.0"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "^1.6.3",
+    "@nuxt/eslint-config": "^0.7.2",
+    "@nuxt/module-builder": "^0.8.4",
+    "@nuxt/schema": "^3.14.1592",
+    "@nuxt/test-utils": "^3.15.1",
+    "@types/node": "latest",
+    "changelogen": "^0.5.7",
+    "eslint": "^9.16.0",
+    "nuxt": "^3.14.1592",
+    "typescript": "~5.6.3",
+    "unbuild": "^3.0.1",
+    "vitest": "^2.1.8",
+    "vue-tsc": "^2.1.10"
+  },
+  "packageManager": "pnpm@9.12.2+sha512.22721b3a11f81661ae1ec68ce1a7b879425a1ca5b991c975b074ac220b187ce56c708fe5db69f4c962c989452eee76c82877f4ee80f474cebd61ee13461b6228"
+}
