@@ -12,7 +12,7 @@ Install the module to your Nuxt application with one command:
 npx nuxi module add nuxt-yapi
 ```
 
-## Contribution
+## Configuration
 
 ```bash
 export default defineNuxtConfig({
