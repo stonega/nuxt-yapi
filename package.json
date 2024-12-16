@@ -1,6 +1,6 @@
 {
   "name": "nuxt-yapi",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Nuxt module for Yapi.",
   "repository": "https://github.com/stonega/nuxt-yapi",
   "license": "MIT",
