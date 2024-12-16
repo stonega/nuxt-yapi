@@ -56,15 +56,46 @@ export default defineNuxtModule<ModuleOptions>({
       // Generate shema type
       await generate({ name: api.name ?? '', apiDir, token: api.token, url: _options.service })
       addPluginTemplate({
-        src: resolver.resolve('./runtime/plugin.ejs'),
+        // src: resolver.resolve('./runtime/plugin.ejs'),
         filename: `${api.name ?? 'default'}-api.mjs`,
         write: true,
-        options: { name: api.name, baseUrl: api.baseUrl },
+        getContents: () => {
+          return `import { defineNuxtPlugin } from '#imports'
+import { ofetch } from 'ofetch'
+
+export default defineNuxtPlugin((nuxtApp) => {
+  const apiProvider = {
+    fetch: ofetch.create({
+      baseURL: '${api.baseUrl}',
+      headers: {
+        'Content-Type': 'application/json',
+        'accept-language': 'en-US',
+      },
+      retry: 3,
+      retryDelay: 500,
+      parseResponse: (data) => {
+        const response = JSON.parse(data);
+        if (response.code !== '000' && response.code !== 200) {
+          throw new Error(response.msg);
+        }
+        else {
+          return response.data;
+        }
+      },
+    }),
+  };
+  return {
+    provide: {
+      ${!api.name ? 'api' : api.name + 'Api'}: new ${api.name ?? ''}Yapi(apiProvider)
+    },
+  };
+})`
+        },
       })
       logger.info(`Yapi ${api.name ?? 'default'} added`)
     }
 
-    const apis = _options.apis.map(api => api.name)
+    const apis = _options.apis.map(api => api.name ?? 'default')
     logger.info(`${bold('Yapi inited:')} ${green(apis.join(' '))}`)
   },
 })
